@@ -122,19 +122,22 @@ st.markdown("---")
 st.markdown("### Vendas Totais por Ano")
 st.markdown("&nbsp;")
 
-# --- GRÁFICO DE LINHAS ---
+# --- GRÁFICO DE VENDAS POR ANO ---
+
 vendas_ano = dados.groupby('Ano')['Total'].sum().reset_index()
-fig2, ax2 = plt.subplots(figsize=(10, 5))
+
+fig2, ax2 = plt.subplots(figsize=(10, 6))
 sns.lineplot(data=vendas_ano, x='Ano', y='Total', marker='o', color='skyblue', ax=ax2)
 
+# Coloca valores um pouco à esquerda e acima dos pontos
 for _, row in vendas_ano.iterrows():
-    ax2.text(row['Ano'] - 0.1, row['Total'], f'R$ {row['Total']:,.0f}', va='bottom', ha='right', fontsize=8)
+    ax2.text(row['Ano'] - 0.1, row['Total'] * 1.01, f'R$ {row["Total"]:,.0f}', ha='right', va='bottom', fontsize=8)
 
-ax2.set_title('')
+# Formatação do gráfico
 ax2.set_xlabel('Ano')
 ax2.set_ylabel('')
 ax2.grid(False)
+ax2.set_xticks(vendas_ano['Ano'])  # Mostra apenas os anos inteiros
 ax2.get_yaxis().set_visible(False)
 sns.despine(left=True, top=True, right=True)
-
 st.pyplot(fig2)
