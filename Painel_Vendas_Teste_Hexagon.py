@@ -48,6 +48,47 @@ def carregar_dados():
 
 df = carregar_dados()
 
+# Renomear colunas
+df.rename(columns={
+    "OrderDate": "Data",
+    "TotalDue": "Total",
+    "Region": "Regiao",
+    "Product": "Produto"
+}, inplace=True)
+
+# Remover duplicatas
+df = df.drop_duplicates()
+print(df)
+
+# Verificar tipos de dados
+print("Tipos de dados antes da conversão:")
+print(df.dtypes)
+
+# Verificar dados nulos
+print("Valores nulos por coluna:\n", df.isnull().sum())
+
+# --- OUTLIERS ---
+plt.figure(figsize=(6, 4))
+sns.boxplot(x=df['Total'])
+plt.title('Boxplot - Total de Vendas')
+plt.tight_layout()
+plt.show()
+
+Q1 = df['Total'].quantile(0.25)
+Q3 = df['Total'].quantile(0.75)
+IQR = Q3 - Q1
+limite_inf = Q1 - 1.5 * IQR
+limite_sup = Q3 + 1.5 * IQR
+
+outliers = df[(df['Total'] < limite_inf) | (df['Total'] > limite_sup)]
+print("\nOutliers encontrados (IQR):")
+print(outliers if not outliers.empty else "Nenhum outlier encontrado.")
+
+# Conversão e coluna de ano
+df['Data'] = pd.to_datetime(df['Data'])
+df['Ano'] = df['Data'].dt.year
+print(df)
+
 # --- SIDEBAR COM FILTROS ---
 st.sidebar.header("Filtros")
 
