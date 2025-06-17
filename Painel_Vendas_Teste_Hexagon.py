@@ -137,7 +137,7 @@ for _, row in vendas_ano.iterrows():
 ax2.set_xlabel('Ano')
 ax2.set_ylabel('')
 ax2.grid(False)
-ax2.set_xticks(vendas_ano['Ano'])  # Mostra apenas os anos inteiros
+ax2.set_xticks(vendas_ano['Ano']) 
 ax2.get_yaxis().set_visible(False)
 sns.despine(left=True, top=True, right=True)
 st.pyplot(fig2)
